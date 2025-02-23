@@ -17,9 +17,7 @@ export class DrugDataMatcher {
 	}
 	public normalizeQuery(query: string): string {
 
-		// ひらがなのへとカタカナのへを正規化する
-		const norm = query.replace(/へ/g, "ヘ");
-		return norm.normalize("NFKC");
+		return query.normalize("NFKC");
 	}
 	public matchingbyEachCharactor(query: string) {
 		
@@ -57,15 +55,20 @@ export class DrugDataMatcher {
 		const isAlphabet = /^[a-zA-Z]+$/.test(normalized);
 
 		return _datas.map((d) => {
-			let split: string[] = [];
+			
+			let newData= "";
+			let index = -1;
 			if (isAlphabet) {
-				const regex = new RegExp(normalized, "i");
-				split = d.val.split(regex);
+				const normalizedLowerCase = normalized.toLowerCase();
+				index = d.val.toLowerCase().indexOf(normalizedLowerCase);
 				
 			} else {
-				split = d.val.split(normalized);
+				index = d.val.indexOf(normalized);
 			}
-			const newData = split[1] || ""; // 分割の後ろを取得、なければ空文字
+			if (index !== -1) {
+				newData = d.val.substring(index + 1);
+			} 
+
 			return {
 				...d,
 				val: newData,

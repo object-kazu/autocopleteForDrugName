@@ -48,4 +48,19 @@ describe("DrugDataMatcher for prod", () => {
 
 	});
 
+	test('オルメ', ()=> {
+		matcher = new DrugDataMatcher(data);
+
+		matcher.matchingbyEachCharactor("オルメ");
+		expect(matcher.selectedDatas.length).toBe(33);
+
+	});
+	test('オルメ10', ()=> {
+		matcher = new DrugDataMatcher(data);
+
+		matcher.matchingbyEachCharactor("オルメ10");
+		expect(matcher.selectedDatas.length).toBe(9);
+
+	});
+
 }); // end of describe

@@ -60,24 +60,27 @@ const KsInputSelection = ({ data }: { data: DrugData[] }) => {
      */
 
 		if (
+			// shift + enter　で確定、さらにコピー
 			e.key === "Enter" &&
 			e.shiftKey &&
 			searchTerm.length >= minSearchLength
 		) {
 			console.log("Enter+shift key is pressed");
+
+			if (isOpen) {
+				const selectedItem = filteredList[selectedIndex];
+
+				if (selectedItem) {
+					setSearchTerm(selectedItem.val);
+					setIsOpen(false); // リストを閉じる
+				}
+				return;
+			}
 			e.preventDefault();
 			handleSiftEnter();
 			return;
 		}
-		if (e.key === "Enter" && isOpen) {
-			e.preventDefault();
-			const selectedItem = filteredList[selectedIndex];
 
-			if (selectedItem) {
-				setSearchTerm(selectedItem.val);
-				setIsOpen(false); // リストを閉じる
-			}
-		}
 		if (isOpen && searchTerm.length >= minSearchLength) {
 			// 上下キーの処理
 			switch (e.key) {
